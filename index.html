@@ -11,6 +11,13 @@
         body {
             margin: 0;
             overflow: hidden; /* 防止滚动条 */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;  /* 保证页面垂直居中 */
+            text-align: center;
         }
 
         #world {
@@ -22,31 +29,22 @@
             height: 100%;
         }
 
-        #title { /* 标题样式 */
+        #title {
             font-size: 3rem;
             cursor: pointer;
-            text-align: center;
-            position: relative; /* 确保标题在 canvas 之上 */
-            z-index: 1;
+            position: relative;
+            z-index: 1; /* 确保标题在 canvas 之上 */
             padding-top: 20px; /* 调整标题位置 */
+            margin-bottom: 20px; /* 给标题与搜索框之间留出空间 */
         }
 
-        .js-cursor-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000; /* 确保拖尾在最上层 */
-            pointer-events: none; /* 防止拖尾遮挡其他元素 */
-        }
-
-        /* 限制样式只作用于搜索引擎切换功能的部分 */
         .search-container {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 400px 0;  /* 给搜索框设置一些间距 */
-            z-index: 1000; /* 确保搜索框不被背景遮挡 */
+            margin-top: 500px;  /* 添加顶部间距，确保与标题有间隔 */
+            z-index: 1000;  /* 确保搜索框不被背景遮挡 */
         }
 
         .search-form {
@@ -64,16 +62,29 @@
             transition: box-shadow 0.3s ease, transform 0.3s ease;
             animation: inputAnimation 6s infinite;
         }
+        .search-input::placeholder {
+            font-family: 'Arial', sans-serif; /* 设置字体 */
+            font-size: 18px; /* 设置字体大小 */
+            color: #403737; /* 设置提示文本颜色 */
+            font-style: italic; /* 设置斜体 */
+        }
+        
+        /* 悬浮效果 */
+        .search-input:hover {
+            background-color: #f0f0f0; /* 背景色变 */
+            transform: scale(1.05);  /* 放大效果 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* 更大的阴影效果 */
+        }
 
         @keyframes inputAnimation {
             0% {
-                background-color: #FFC0CB;
+                background-color: #e980c693;
             }
             50% {
-                background-color: #87CEEB;
+                background-color: #9f6be7af;
             }
             100% {
-                background-color: #FFC0CB;
+                background-color: #6797de8f;
             }
         }
 
