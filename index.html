@@ -152,6 +152,37 @@
     </style>
 </head>
 <body>
+    <!-- 看板娘开始 -->
+<link href='https://cdn.jsdelivr.net/gh/xiaoyanu/file-test@2021.12.1-2/kbn/pio.css' rel='stylesheet' type='text/css'/>
+<!-- 可选位置： left 或 right -->
+<div class="pio-container right">
+    <div class="pio-action"></div>
+    <!-- 高度和宽度根据每个模型的不同 进行调整 -->
+    <canvas id="pio" width="170" height="295"></canvas>
+</div>
+<script src='https://cdn.jsdelivr.net/gh/xiaoyanu/file-test@2021.12.1-2/kbn/l2d.js'></script>
+<script src='https://cdn.jsdelivr.net/gh/xiaoyanu/file-test@2021.12.1-2/kbn/pio.js'></script>
+<script>
+    var pio = new Paul_Pio({
+        "mode": "fixed",
+        "touch": ["点击提示文字在kbn/pio.js中修改"],
+        "hidden": false, //手机端是否隐藏
+        "referer": "小帅哥小美女你好呀",
+        "content": {
+            "welcome": "欢迎来到江江的网站！"
+        },
+        // 可用参数：
+        // "leimu" "1" "2" "kangna" "qingye" "shawu" "xiaomai" "zhinai"
+        
+        // 举例子：
+        // "model": ["https://cdn.jsdelivr.net/gh/xiaoyanu/file-test@2021.12.1/kbn/ 可修改参数位置 /model.json"],
+        
+        "model": ["https://cdn.jsdelivr.net/gh/xiaoyanu/file-test@2021.12.1/kbn/xiaomai/model.json"],
+        
+        "tips": true //如果设置为false则会优先显示welcome中的内容“欢迎~”
+    });
+</script>
+<!-- 看板娘结束 -->
 
     <h1 id="title" style="font-size: 1em;">帅的满城飞花</h1>
     <h1 style="font-size: 3rem;">jiangjiang&rsquo;s net</h1>
