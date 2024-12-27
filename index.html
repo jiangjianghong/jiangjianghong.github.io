@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
+        
         body {
             margin: 0;
             overflow: hidden; /* 防止滚动条 */
@@ -101,19 +102,22 @@
         .search-button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.5s ease;
+            background-color: #4CAF50;  /* 设置按钮背景颜色 */
+            color: white;  /* 设置按钮文本颜色 */
+            border: none;  /* 去掉按钮边框 */
+            border-radius: 20px;  /* 设置圆角 */
+            margin-left: 10px;  /* 左侧间距 */
+            cursor: pointer;  /* 鼠标悬停时显示为指针 */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;  /* 添加背景色和阴影的过渡效果 */
         }
-
+        
         .search-button:hover {
-            background-color: #45a049;
-            transform: rotateY(180deg); /* 翻转效果 */
+            background-color: #45a049;  /* 悬停时按钮背景颜色变化 */
+            transform: scale(1.05);  /* 悬停时按钮略微放大 */
+            box-shadow: 0 0 10px rgba(72, 213, 132, 0.7);  /* 悬停时添加阴影效果 */
         }
+        
+        
 
         .toggle-button {
             background-color: transparent;
@@ -152,6 +156,7 @@
     </style>
 </head>
 <body>
+    
     <!-- 看板娘开始 -->
 <link href='https://cdn.jsdelivr.net/gh/xiaoyanu/file-test@2021.12.1-2/kbn/pio.css' rel='stylesheet' type='text/css'/>
 <!-- 可选位置： left 或 right -->
@@ -496,8 +501,20 @@
     <div class="cssnow"></div>
 
     
-    <div class="flex flex-wrap items-center justify-center h-screen">
-       
+    <div class="flex flex-wrap items-end justify-center h-screen">
+        <button class="custom-button">
+            <div>
+              <span>
+                <p> ''  Hellow, ''</p>
+              </span>
+            </div>
+            <div>
+              <span>
+                <p>  ''  World!''</p>
+              </span>
+            </div>
+          </button>
+          
         
 
 
