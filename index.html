@@ -1,47 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>江江真帅啊</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="styles.css">
-        <style>
-            body {
-                margin: 0;
-                overflow: hidden; /* 防止滚动条 */
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>江江真帅啊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* 防止滚动条 */
+        }
+
+        #world {
+            position: fixed; /* 关键：固定 canvas 位置 */
+            top: 0;
+            left: 0;
+            z-index: -1; /* 将 canvas 放在背景层 */
+            width: 100%; /* 确保 canvas 覆盖整个屏幕 */
+            height: 100%;
+        }
+
+        #title { /* 标题样式 */
+            font-size: 3rem;
+            cursor: pointer;
+            text-align: center;
+            position: relative; /* 确保标题在 canvas 之上 */
+            z-index: 1;
+            padding-top: 20px; /* 调整标题位置 */
+        }
+
+        .js-cursor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000; /* 确保拖尾在最上层 */
+            pointer-events: none; /* 防止拖尾遮挡其他元素 */
+        }
+
+        /* 限制样式只作用于搜索引擎切换功能的部分 */
+        .search-container {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 400px 0;  /* 给搜索框设置一些间距 */
+            z-index: 1000; /* 确保搜索框不被背景遮挡 */
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            animation: inputAnimation 6s infinite;
+        }
+
+        @keyframes inputAnimation {
+            0% {
+                background-color: #FFC0CB;
             }
-            #world {
-                position: fixed; /* 关键：固定 canvas 位置 */
-                top: 0;
-                left: 0;
-                z-index: -1; /* 将 canvas 放在背景层 */
-                width: 100%; /* 确保 canvas 覆盖整个屏幕 */
-                height: 100%;
+            50% {
+                background-color: #87CEEB;
             }
-            #title { /* 标题样式 */
-                font-size: 3rem;
-                cursor: pointer;
-                text-align: center;
-                position: relative; /* 确保标题在 canvas 之上 */
-                z-index: 1;
-                padding-top: 20px; /* 调整标题位置 */
+            100% {
+                background-color: #FFC0CB;
             }
-            .js-cursor-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 1000; /* 确保拖尾在最上层 */
-                pointer-events: none; /* 防止拖尾遮挡其他元素 */
+        }
+
+        .search-input:hover {
+            transform: scale(1.05);  /* 放大效果 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.5s ease;
+        }
+
+        .search-button:hover {
+            background-color: #45a049;
+            transform: rotateY(180deg); /* 翻转效果 */
+        }
+
+        .toggle-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-button:hover {
+            animation: bounceUp 1s ease-in-out;
+        }
+
+        @keyframes bounceUp {
+            0% {
+                transform: translateY(0);
             }
-        </style>
-        
-    </head>
-    
-    <body>
-        
-        <h1 id="title" style="font-size: 1em;">帅的满城飞花</h1>
+            30% {
+                transform: translateY(-10px);
+            }
+            50% {
+                transform: translateY(0);
+            }
+            70% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .toggle-icon {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="title" style="font-size: 1em;">帅的满城飞花</h1>
+    <h1 style="font-size: 3rem;">jiangjiang&rsquo;s net</h1>
+    <!-- 搜索引擎切换功能部分 -->
+    <div class="search-container">
+        <button class="toggle-button" onclick="toggleSearchEngine()">
+            <img id="toggleIcon" class="toggle-icon" src="./icons/bing.png" alt="Bing">
+        </button>
+        <form id="searchForm" action="https://www.bing.com/search" method="get">
+            <input id="searchInput" class="search-input" type="text" name="q" placeholder="Bing搜索...">
+            <input class="search-button" type="submit" value="搜索">
+        </form>
+    </div>
+
+    <script>
+        let isBing = true;
+
+        function toggleSearchEngine() {
+            const form = document.getElementById('searchForm');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const searchInput = document.getElementById('searchInput');
+
+            if (isBing) {
+                form.action = 'https://www.google.com/search';
+                toggleIcon.src = './icons/google.png';
+                toggleIcon.alt = 'Google';
+                searchInput.placeholder = 'Google搜索...';
+            } else {
+                form.action = 'https://www.bing.com/search';
+                toggleIcon.src = './icons/bing.png';
+                toggleIcon.alt = 'Bing';
+                searchInput.placeholder = 'Bing搜索...';
+            }
+
+            isBing = !isBing;
+        }
+    </script>
     
         <canvas id="world"></canvas>
     <!--拖尾1-->
@@ -313,242 +449,14 @@
     <!-- <script type="text/javascript"
         src="https://cdn.jsdelivr.net/gh/Fuukei/Public_Repository@latest/static/js/sakura-less.js"></script> -->
     <!-- 确保使用 &rsquo; 或双引号 -->
-    <h1 style="font-size: 3rem;">jiangjiang&rsquo;s net</h1>
+   
 
     <div class="cssnow"></div>
 
     
     <div class="flex flex-wrap items-center justify-center h-screen">
-        <!-- First Button -->
-        <div class="relative group m-4">
-            <a href="https://im.qq.com/pcqq/index.shtml" target="_blank">
-                <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                    <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                    <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                        <div class="relative z-10 flex items-center space-x-3">
-                            <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">QQ</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                                <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                            </svg>
-                        </div>
-                    </span>
-                </button>
-                <!-- 描述窗口 -->
-            <div class="group relative">
-                <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-                    没啥用，花里胡哨。
-                </div>
-            </div>
-            </a>
-        </div>
-    
-        <!-- Second Button -->
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Wechat</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-            <div class="group relative">
-                <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-                    大家都在用。
-                </div>
-            </div>
-        </div>
-    
+       
         
-
-
-
-        <!-- Third Button -->
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Utools</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-            <div class="group relative">
-                <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-                    妥妥的桌面效率神器
-                </div>
-            </div>
-            </div>
-    
-        <!-- Fourth Button -->
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Ttime</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-            <div class="group relative">
-                <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-                    快捷翻译，可自定义api
-                </div>
-            </div>
-        </div>
-    
-        <!-- Fifth Button -->
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Pixpin</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-    <div class="group relative">
-        <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-            强于snap的截图神器
-        </div>
-    </div>
-        </div>
-
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Button 5</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-    <div class="group relative">
-        <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-            没啥用，花里胡哨。
-        </div>
-    </div>
-        </div>
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Button 5</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-    <!-- 描述窗口 -->
-    <div class="group relative">
-        <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-            没啥用，花里胡哨。
-        </div>
-    </div>
-        </div>
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Button 5</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-    <!-- 描述窗口 -->
-    <div class="group relative">
-        <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-            没啥用，花里胡哨。
-        </div>
-    </div>
-        </div>
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Button 5</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-   <div class="group relative">
-    <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-        没啥用，花里胡哨。
-    </div>
-</div>
-        </div>
-        <div class="relative group m-4">
-            <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-                <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div class="relative z-10 flex items-center space-x-3">
-                        <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Button 5</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                        </svg>
-                    </div>
-                </span>
-            </button>
-            <!-- 描述窗口 -->
-   <!-- 描述窗口 -->
-   <div class="group relative">
-    <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-        没啥用，花里胡哨。
-    </div>
-</div>
-        </div>
-        <div class="relative group m-4">
-    <!-- 按钮 -->
-    <button class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 shadow-2xl cursor-pointer rounded-2xl shadow-emerald-900 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 hover:shadow-emerald-600">
-        <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-        <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-            <div class="relative z-10 flex items-center space-x-3">
-                <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Button 5</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
-                    <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-                </svg>
-            </div>
-        </span>
-    </button>
-    <!-- 描述窗口 -->
-    <!-- 描述窗口 -->
-    <div class="group relative">
-        <div class="my-hover-div absolute left-1/2 transform -translate-x-1/2 mt-4 w-[150px] p-4 bg-gradient-to-r from-[#007bff]/60 to-[#6f42c1]/60 text-white text-sm rounded-lg shadow-lg transition-transform duration-500 opacity-0 group-hover:opacity-100 group-hover:rotateX-0 rotateX-90 origin-top flex justify-center items-center backdrop-blur-md">
-            没啥用，花里胡哨。
-        </div>
-    </div>
-</div>
 
 
 
