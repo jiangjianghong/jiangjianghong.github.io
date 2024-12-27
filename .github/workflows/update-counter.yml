@@ -1,0 +1,27 @@
+name: Update Visitor Count
+
+on:
+  schedule:
+    # 每小时运行一次
+    - cron: '0 * * * *'
+
+jobs:
+  update-count:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Increment visitor count
+        run: |
+          # 使用 jq 来更新 counter.json 中的 visitorCount 字段
+          VISITOR_COUNT=$(jq '.visitorCount + 1' counter.json)
+          # 将更新后的数据写回到 counter.json
+          echo "{\"visitorCount\": $VISITOR_COUNT}" > counter.json
+
+      - name: Commit and push updated count
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: "Update visitor count"
+          add: "counter.json"
