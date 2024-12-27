@@ -153,6 +153,20 @@
             width: 30px;
             height: 30px;
         }
+
+        /*
+        #visitorCount {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;  
+            transform: translateX(-50%); 
+            background-color: rgba(0, 0, 0, 0.5); 
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            font-size: 16px; 
+        }
+        */
     </style>
 </head>
 <body>
@@ -500,130 +514,55 @@
 
     <div class="cssnow"></div>
 
-    <SCRIPT language=JavaScript>
-
-        <!--
-        
-        var caution = false
-        
-        function setCookie(name, value, expires, path, domain, secure) {
-        
-        var curCookie = name + "=" + escape(value) +
-        
-        ((expires) ? "; expires=" + expires.toGMTString() : "") +
-        
-        ((path) ? "; path=" + path : "") +
-        
-        ((domain) ? "; domain=" + domain : "") +
-        
-        ((secure) ? "; secure" : "")
-        
-        if (!caution || (name + "=" + escape(value)).length <= 4000)
-        
-        document.cookie = curCookie
-        
-        else
-        
-        if (confirm("Cookie exceeds 4KB and will be cut!"))
-        
-        document.cookie = curCookie
-        
-        }
-        
-        function getCookie(name) {
-        
-        var prefix = name + "="
-        
-        var cookieStartIndex = document.cookie.indexOf(prefix)
-        
-        if (cookieStartIndex == -1)
-        
-        return null
-        
-        var cookieEndIndex = document.cookie.indexOf(";", cookieStartIndex + prefix.length)
-        
-        if (cookieEndIndex == -1)
-        
-        cookieEndIndex = document.cookie.length
-        
-        return unescape(document.cookie.substring(cookieStartIndex + prefix.length, cookieEndIndex))
-        
-        }
-        
-        function deleteCookie(name, path, domain) {
-        
-        if (getCookie(name)) {
-        
-        document.cookie = name + "=" +
-        
-        ((path) ? "; path=" + path : "") +
-        
-        ((domain) ? "; domain=" + domain : "") +
-        
-        "; expires=Thu, 01-Jan-70 00:00:01 GMT"
-        
-        }
-        
-        }
-        
-        function fixDate(date) {
-        
-        var base = new Date(0)
-        
-        var skew = base.getTime()
-        
-        if (skew > 0)
-        
-        date.setTime(date.getTime() - skew)
-        
-        }
-        
-        var now = new Date()
-        
-        fixDate(now)
-        
-        now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000)
-        
-        var visits = getCookie("counter")
-        
-        if (!visits)
-        
-        visits = 1
-        
-        else
-        
-        visits = parseInt(visits) + 1
-        
-        setCookie("counter", visits, now)
-        
-        document.write("欢迎光临本站，您是第" + visits + "位访问者！")
-        
-        // -->
-        
-        </SCRIPT>
-        
-    <div class="flex flex-wrap items-end justify-center h-screen">
+    
+    <div class="flex items-end justify-center h-screen">
         <button class="custom-button">
             <div>
-              <span>
-                <p> ''  Hellow, ''</p>
-              </span>
+                <span>
+                    <p>'' Hello! ''</p>
+                </span>
             </div>
             <div>
-              <span>
-                <p>  ''  World!''</p>
-              </span>
+                <span>
+                    <p> <span id="visitorCountSpan"></span></p>
+                </span>
             </div>
-          </button>
+        </button>
+    </div>
+    
+    <script>
+        // 假设这里是你通过 fetch 获取的 visitorCount
+        let visitorCount;
+    
+        // 使用 fetch 读取 counter.json 文件
+        fetch('counter.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 将 visitorCount 存储到变量中
+                visitorCount = data.visitorCount;
+    
+                // 动态更新 World 部分的内容
+                const visitorCountSpan = document.getElementById('visitorCountSpan');
+                if (visitorCountSpan) {
+                    // 使用模板字符串动态插入 visitorCount
+                    visitorCountSpan.innerText =`${visitorCount}位人类`;  // 使用模板字符串
+                }
+            })
+            .catch(error => {
+                console.error('Error loading visitor count:', error);
+                // 发生错误时，显示错误信息
+                const visitorCountSpan = document.getElementById('visitorCountSpan');
+                if (visitorCountSpan) {
+                    visitorCountSpan.innerText = 'Error loading count'; // 设置错误提示
+                }
+            });
+    </script>
           
-        
-
-
-
-
-
-
-
     <button id="toggle-blur" class="toggle-blur-button">近视眼镜</button>
 
     <a id="btn-twtr" href="https://github.com/jiangjianghong" target="_blank">Follow me on Github</a>

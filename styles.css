@@ -191,9 +191,10 @@ h1:hover {
 
 /* From Uiverse.io by Sergestra */ 
 .custom-button {
+    display:flex;
     outline: 0;
+    
     border: 0;
-    display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 140px;
@@ -201,6 +202,7 @@ h1:hover {
     border-radius: 0.5em;
     box-shadow: 0 0.625em 1em 0 rgba(30, 143, 255, 0.35);
     overflow: hidden;
+    white-space: nowrap;
   }
   
   .custom-button div {
@@ -214,7 +216,7 @@ h1:hover {
   }
   
   .custom-button div span {
-    display: flex;
+    display: inline-flex ;
     align-items: center;
     justify-content: space-between;
     height: 50px;
@@ -238,6 +240,7 @@ h1:hover {
   }
   
   .custom-button p {
+    display: inline-flex ;
     font-size: 17px;
     font-weight: bold;
     color: #ffffff;
