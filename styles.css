@@ -156,7 +156,7 @@ h1:hover {
     padding: 5px 10px;
     font-weight: 600;
     position: absolute;
-    top: 90%;
+    top: 87%;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -165,8 +165,34 @@ h1:hover {
     opacity: 0.3;
 }
 
+#btn-twtr1 {
+    clear: both;
+    color: #f1f1f1;
+    border: 2px solid;
+    border-radius: 3px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-family: sans-serif;
+    font-size: 14px;
+    width: 13em;
+    padding: 5px 10px;
+    font-weight: 600;
+    position: absolute;
+    top: 90%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background: rgb(15, 14, 15);
+    box-shadow: 0 0 0px 3px rgba(0, 0, 0, 0.818);
+    opacity: 0.3;
+}
 #btn-twtr:hover {
     color: #c425b6;
+    opacity: 1;
+}
+#btn-twtr1:hover {
+    color: #25c48c;
     opacity: 1;
 }
 .toggle-blur-button {
